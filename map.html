@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html style="height:100%;">
+<head>
+    <meta charset="utf-8">
+    <!-- echarts -->
+    <script src="echarts.min.js"></script>
+    <!-- 中国地图的资源 -->
+    <script src="china.js"></script>
+</head>
+<body style="height:100%;">
+    <div id="main" style="width:100%;height:100%;"></div>
+<script>
+    // 随机数
+    function randomData() {
+        return Math.round(Math.random()*500);
+    }
+    // 动态创建script标签
+    function loadScript(url, callback) {
+        var script = document.createElement("script")
+        script.type = "text/javascript";
+        if (script.readyState) {
+            script.onreadystatechange = function() {
+                if (script.readyState == "loaded" || script.readyState == "complete") {
+                    script.onreadystatechange = null;
+                    callback();
+                }
+            };
+        } else {
+            script.onload = function() {
+                callback();
+            };
+        }
+        script.src = url;
+        document.getElementsByTagName("head")[0].appendChild(script);
+    }
+    var provicearr = ['北京', '天津', '上海', '重庆', '河北', '河南', '云南', '辽宁', '黑龙江','湖南', '安徽', '山东', '新疆', '江苏', '浙江', '江西', '湖北', '广西', '甘肃', '山西', '内蒙古','陕西', '吉林', '福建', '贵州', '广东', '青海', '西藏', '四川', '宁夏', '海南', '台湾', '香港', '澳门',]
+    var mydata = [
+        {name: '北京',value: randomData() },{name: '天津',value: randomData() },
+        {name: '上海',value: randomData() },{name: '重庆',value: randomData() },
+        {name: '河北',value: randomData() },{name: '河南',value: randomData() },
+        {name: '云南',value: randomData() },{name: '辽宁',value: randomData() },
+        {name: '黑龙江',value: randomData() },{name: '湖南',value: randomData() },
+        {name: '安徽',value: randomData() },{name: '山东',value: randomData() },
+        {name: '新疆',value: randomData() },{name: '江苏',value: randomData() },
+        {name: '浙江',value: randomData() },{name: '江西',value: randomData() },
+        {name: '湖北',value: randomData() },{name: '广西',value: randomData() },
+        {name: '甘肃',value: randomData() },{name: '山西',value: randomData() },
+        {name: '内蒙古',value: randomData() },{name: '陕西',value: randomData() },
+        {name: '吉林',value: randomData() },{name: '福建',value: randomData() },
+        {name: '贵州',value: randomData() },{name: '广东',value: randomData() },
+        {name: '青海',value: randomData() },{name: '西藏',value: randomData() },
+        {name: '四川',value: randomData() },{name: '宁夏',value: randomData() },
+        {name: '海南',value: randomData() },{name: '台湾',value: randomData() },
+        {name: '香港',value: randomData() },{name: '澳门',value: randomData() }
+    ];
+    // 一个数组  存放  点击的省的所有市的数据 ProvinceData
+    var guangdongData = [
+        {name: '广州市',value: randomData() },{name: '佛山市',value: randomData() },
+        {name: '肇庆市',value: randomData() },{name: '韶关市',value: randomData() },
+        {name: '清远市',value: randomData() },{name: '云浮市',value: randomData() },
+        {name: '茂名市',value: randomData() },{name: '湛江市',value: randomData() },
+        {name: '江门市',value: randomData() },{name: '东莞市',value: randomData() },
+        {name: '阳江市',value: randomData() },{name: '深圳市',value: randomData() },
+        {name: '惠州市',value: randomData() },{name: '河源市',value: randomData() },
+        {name: '汕尾市',value: randomData() },{name: '揭阳市',value: randomData() },
+        {name: '河源市',value: randomData() },{name: '梅州市',value: randomData() },
+        {name: '潮州市',value: randomData() },{name: '汕头市',value: randomData() },
+        {name: '中山市',value: randomData() },{name: '珠海市',value: randomData() }
+    ];
+    var hebeiData = [
+        {name: '邯郸市',value: randomData() },{name: '石家庄市',value: randomData() },
+        {name: '廊坊市',value: randomData() },{name: '邢台市',value: randomData() },
+        {name: '保定市',value: randomData() },{name: '唐山市',value: randomData() },
+        {name: '张家口市',value: randomData() },{name: '沧州市',value: randomData() },
+        {name: '衡水市',value: randomData() },{name: '承德市',value: randomData() },
+        {name: '秦皇岛市',value: randomData() }
+    ];
+    var handanData = [
+        {name: '涉县',value: randomData() },{name: '武安市',value: randomData() },
+        {name: '磁县',value: randomData() },{name: '峰峰矿区',value: randomData() },
+        {name: '永年县',value: randomData() },{name: '邯郸县',value: randomData() },
+        {name: '肥乡县',value: randomData() },{name: '成安县',value: randomData() },
+        {name: '临漳县',value: randomData() },{name: '鸡泽县',value: randomData() },
+        {name: '曲周县',value: randomData() },{name: '邱县',value: randomData() },
+        {name: '大名县',value: randomData() },{name: '馆陶县',value: randomData() },
+        {name: '魏县',value: randomData() },{name: '复兴区',value: randomData() },
+        {name: '邯山区',value: randomData() },{name: '广平县',value: randomData() },
+        {name: '丛台区',value: randomData() }
+    ]
+    var hubeiData = [
+        {name: '荆门市',value: randomData() }
+    ]
+    var sichuanData = [{name: '达州市',value: randomData() }]
+
+
+    function drawMap(darwMapType, data) {
+        var option = {
+            backgroundColor: '#FFFFFF',
+            title: {
+                text: '智联充分布数据图',
+                subtext: '',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item'
+            },
+            visualMap: {
+                show : false,
+                x: 'left',
+                y: 'top',
+                splitList: [
+                    {start: 500, end:600},{start: 400, end: 500},
+                    {start: 300, end: 400},{start: 200, end: 300},
+                    {start: 100, end: 200},{start: 0, end: 100},
+                ],
+                color: ['#16CC33', '#10FF00', '#16FF33','#139900', '#13CC00', '#10CC00'],
+            },
+            series: [{
+                name: '数量',
+                type: 'map',
+                mapType: darwMapType || selectPlacename,
+                roam: true,
+                label: {
+                    normal: {
+                        show: true,
+                        formatter:'{c}',
+                        offset: [30,30]
+                    },
+                    emphasis: {
+                        show: true,
+                    }
+                },
+                data:data || data1,
+            }]
+        };
+        echarts.dispose(document.getElementById('main'));//先去掉原来的地图
+        var chart = echarts.init(document.getElementById('main'));
+        chart.setOption(option);
+        chart.on("click", function(param) {
+            if (provicearr.indexOf(param.name) !== -1) {
+                selectProvice = param.name
+                data1 = hebeiData
+                var url = "mapjs/" + selectProvice + "/" + selectProvice + ".js";
+                selectPlacename = selectProvice
+            } else {
+                selectcities = param.name
+                var url = "mapjs/" + selectProvice + "/city/" + selectcities + ".js";
+                selectPlacename = selectcities
+                data1 = handanData
+            }
+            loadScript(url, drawMap)
+
+        });
+
+        chart.on("contextmenu", function(e) {
+            // 点击右键   阻止默认事件
+            e.event.event.preventDefault();
+            if (provicearr.indexOf(selectPlacename) == -1) {
+                selectPlacename = selectProvice
+                data1 = hebeiData
+                var url = "mapjs/" + selectProvice + "/" + selectProvice + ".js";
+                return loadScript(url, drawMap)
+            }
+            // 重新画中国地图
+            drawMap('china', mydata);
+        });
+    }
+
+    window.onload = function() {
+        drawMap('china', mydata);
+    }
+
+</script>
+</body>
+</html>
